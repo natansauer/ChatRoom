@@ -95,7 +95,7 @@ Os 31 testes do app passaram no ambiente da IA, o app rodou no celular e o tempo
 | Tipagem dos módulos puros (utils, types, testes) | Sem erros |
 | Sintaxe dos arquivos .ts/.tsx e do teste do banco | Sem erros |
 | 13 testes do banco (PGlite: 12 do guia + 1 de privilégios) | Escritos e revisados; rodar `npm run test:db` |
-| Tempo real com dois aparelhos (cenários 7, 8 e 9) | Passou no celular + navegador (ver abaixo) |
+| Tempo real com dois aparelhos (cenários 7 a 11) | Passou no celular + navegador (ver abaixo) |
 
 O ambiente da IA não tinha acesso ao registro do npm, então os testes do app rodaram com um executor compatível com Jest sobre os mesmos arquivos. Verificação final no computador: `4-testes.bat` (ou `npm run typecheck`, `npm run test:app`, `npm run test:db`). Depois, seguir os 15 cenários manuais da Etapa 14.3 do guia, com duas contas em dois aparelhos (ou celular + navegador).
 
@@ -106,7 +106,7 @@ O ambiente da IA não tinha acesso ao registro do npm, então os testes do app r
 3. Opcional, para cadastrar sem confirmar e-mail: Authentication → Email → desligar "Confirm email".
 4. `2-iniciar.bat` e ler o QR Code com o Expo Go (SDK 54); se não conectar, `3-iniciar-tunel.bat`.
 
-### Teste no celular (12/11/2026, 19:19–19:35)
+### Teste no celular e no navegador (12/11/2026, 19:19–19:39)
 
 Primeira rodada no Android, pelo Expo Go (SDK 54), depois das correções C23 a C28. As capturas estão em `docs/screenshots/`.
 
@@ -122,8 +122,10 @@ Primeira rodada no Android, pelo Expo Go (SDK 54), depois das correções C23 a 
 | 8 — Dois aparelhos na mesma sala (19:34) | Passou: "2 online · 2 na sala" no celular, com a segunda conta (teste123) no navegador | [tempo-real-online.png](screenshots/tempo-real-online.png) |
 | 9 — Digitar num aparelho | Passou: "teste123 está digitando..." apareceu no celular enquanto a outra conta digitava | [tempo-real-digitando.png](screenshots/tempo-real-digitando.png) |
 | 7 — Mandar de um aparelho e ver no outro (19:35) | Passou: a mensagem "aaa" de teste123 chegou ao celular sem atualizar a tela, à esquerda, com nome, avatar laranja e horário | [tempo-real-mensagem.png](screenshots/tempo-real-mensagem.png) |
+| 10 — Parar de digitar por alguns segundos (navegador, 19:39) | Passou: "Natan Forte Sauer está digitando..." apareceu no navegador e sumiu sozinho depois que o celular parou de digitar | [web-digitando.png](screenshots/web-digitando.png), [web-digitando-sumiu.png](screenshots/web-digitando-sumiu.png) |
+| 11 — Apagar uma mensagem e ver sumir no outro aparelho (19:39) | Passou: "essa mensagem vai ser exclui", mandada pelo celular, apareceu no navegador e sumiu dele quando foi apagada no celular. Confirma a correção C06 (o filtro de DELETE do guia impediria isso) | [web-antes-de-apagar.png](screenshots/web-antes-de-apagar.png), [web-depois-de-apagar.png](screenshots/web-depois-de-apagar.png) |
 
-O tempo real foi confirmado entre dois aparelhos (celular com a conta principal e navegador com a conta teste123): presença, digitando e mensagem nova chegaram sozinhos, sem atualizar a tela. Os cenários 10 (aviso de digitando sumindo) e 11 entre aparelhos (mensagem apagada sumindo no outro lado) não foram registrados em captura.
+O tempo real foi confirmado entre dois aparelhos (celular com a conta principal e navegador com a conta teste123): presença, digitando e mensagem nova chegaram sozinhos, sem atualizar a tela. Também passaram, vistos do navegador, o aviso de digitando sumindo sozinho (10) e a mensagem apagada no celular sumindo do outro aparelho (11). Ficaram de fora só os cenários 13 a 15 (sair e reabrir sem entrar, trocar o nome e mandar mensagem, modo avião).
 
 ## 8. Prompts para erros no teste do aparelho
 

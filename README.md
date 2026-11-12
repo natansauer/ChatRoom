@@ -38,6 +38,12 @@ descritas no [relatório](docs/RELATORIO-CORRECOES.md) (procure `CORREÇÃO` no 
 | --- | --- | --- |
 | <img src="docs/screenshots/tempo-real-online.png" width="200"> | <img src="docs/screenshots/tempo-real-digitando.png" width="200"> | <img src="docs/screenshots/tempo-real-mensagem.png" width="200"> |
 
+Do outro lado (navegador, conta teste123): mensagem apagada no celular some sozinha.
+
+| Antes de apagar | Depois de apagar no celular |
+| --- | --- |
+| <img src="docs/screenshots/web-antes-de-apagar.png" width="420"> | <img src="docs/screenshots/web-depois-de-apagar.png" width="420"> |
+
 ## Relatório de correções
 
 O relatório com todos os problemas encontrados (C01 a C28), os prompts usados, as
