@@ -32,6 +32,12 @@ descritas no [relatório](docs/RELATORIO-CORRECOES.md) (procure `CORREÇÃO` no 
 | --- | --- | --- |
 | <img src="docs/screenshots/salas-vazia.png" width="200"> | <img src="docs/screenshots/sala-apagar.png" width="200"> | <img src="docs/screenshots/sala-sair.png" width="200"> |
 
+**Tempo real entre dois aparelhos** (celular + navegador, contas diferentes):
+
+| 2 online | "Digitando..." | Mensagem chegando |
+| --- | --- | --- |
+| <img src="docs/screenshots/tempo-real-online.png" width="200"> | <img src="docs/screenshots/tempo-real-digitando.png" width="200"> | <img src="docs/screenshots/tempo-real-mensagem.png" width="200"> |
+
 ## Relatório de correções
 
 O relatório com todos os problemas encontrados (C01 a C28), os prompts usados, as

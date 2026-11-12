@@ -2,7 +2,7 @@
 
 12/11/2026 · Natan Sauer
 
-Foram encontradas e corrigidas 22 falhas ao construir o ChatRoom pelo guia do Prof. Bruno Assunção Dias (IESB); outros 6 problemas apareceram e foram resolvidos na configuração e no teste no celular (C23 a C28). Os 31 testes do app passam e o app rodou no Android pelo Expo Go (SDK 54).
+Foram encontradas e corrigidas 22 falhas ao construir o ChatRoom pelo guia do Prof. Bruno Assunção Dias (IESB); outros 6 problemas apareceram e foram resolvidos na configuração e no teste no celular (C23 a C28). Os 31 testes do app passam, o app rodou no Android pelo Expo Go (SDK 54) e o tempo real funcionou entre dois aparelhos.
 
 > Versão editável deste relatório: https://claude.ai/artifact/5MDSwrBX3QYsc7Cdcgxdrs
 
@@ -87,7 +87,7 @@ O guia sugere testar o tempo real com o celular e uma aba do navegador, mas no n
 
 ## 7. Verificação
 
-Os 31 testes do app passaram no ambiente da IA e o app rodou no celular; falta o teste com dois aparelhos.
+Os 31 testes do app passaram no ambiente da IA, o app rodou no celular e o tempo real foi confirmado entre dois aparelhos.
 
 | Verificação | Resultado |
 | --- | --- |
@@ -95,7 +95,7 @@ Os 31 testes do app passaram no ambiente da IA e o app rodou no celular; falta o
 | Tipagem dos módulos puros (utils, types, testes) | Sem erros |
 | Sintaxe dos arquivos .ts/.tsx e do teste do banco | Sem erros |
 | 13 testes do banco (PGlite: 12 do guia + 1 de privilégios) | Escritos e revisados; rodar `npm run test:db` |
-| Tempo real com dois aparelhos (cenários 7 a 10) | Rodar no computador e no celular |
+| Tempo real com dois aparelhos (cenários 7, 8 e 9) | Passou no celular + navegador (ver abaixo) |
 
 O ambiente da IA não tinha acesso ao registro do npm, então os testes do app rodaram com um executor compatível com Jest sobre os mesmos arquivos. Verificação final no computador: `4-testes.bat` (ou `npm run typecheck`, `npm run test:app`, `npm run test:db`). Depois, seguir os 15 cenários manuais da Etapa 14.3 do guia, com duas contas em dois aparelhos (ou celular + navegador).
 
@@ -106,7 +106,7 @@ O ambiente da IA não tinha acesso ao registro do npm, então os testes do app r
 3. Opcional, para cadastrar sem confirmar e-mail: Authentication → Email → desligar "Confirm email".
 4. `2-iniciar.bat` e ler o QR Code com o Expo Go (SDK 54); se não conectar, `3-iniciar-tunel.bat`.
 
-### Teste no celular (12/11/2026, 19:19–19:20)
+### Teste no celular (12/11/2026, 19:19–19:35)
 
 Primeira rodada no Android, pelo Expo Go (SDK 54), depois das correções C23 a C28. As capturas estão em `docs/screenshots/`.
 
@@ -119,8 +119,11 @@ Primeira rodada no Android, pelo Expo Go (SDK 54), depois das correções C23 a 
 | 11 — Segurar e apagar mensagem própria | Passou no aparelho: confirmação exibida e a mensagem sumiu | [sala-apagar.png](screenshots/sala-apagar.png), [sala-apagada.png](screenshots/sala-apagada.png) |
 | Sair da sala | Confirmação "Deseja sair de 'ads'?" exibida | [sala-sair.png](screenshots/sala-sair.png) |
 | Lista com a sala criada | Passou: "ads", 1 participante, "Você participa" | [salas-com-sala.png](screenshots/salas-com-sala.png) |
+| 8 — Dois aparelhos na mesma sala (19:34) | Passou: "2 online · 2 na sala" no celular, com a segunda conta (teste123) no navegador | [tempo-real-online.png](screenshots/tempo-real-online.png) |
+| 9 — Digitar num aparelho | Passou: "teste123 está digitando..." apareceu no celular enquanto a outra conta digitava | [tempo-real-digitando.png](screenshots/tempo-real-digitando.png) |
+| 7 — Mandar de um aparelho e ver no outro (19:35) | Passou: a mensagem "aaa" de teste123 chegou ao celular sem atualizar a tela, à esquerda, com nome, avatar laranja e horário | [tempo-real-mensagem.png](screenshots/tempo-real-mensagem.png) |
 
-Ainda faltam os cenários com dois aparelhos (7 a 10: mensagem, online, digitando e apagar aparecendo no outro lado) e os cenários 13 a 15. Para isso, abrir a mesma sala com uma segunda conta, no celular e no navegador (`npx expo start --web`).
+O tempo real foi confirmado entre dois aparelhos (celular com a conta principal e navegador com a conta teste123): presença, digitando e mensagem nova chegaram sozinhos, sem atualizar a tela. Os cenários 10 (aviso de digitando sumindo) e 11 entre aparelhos (mensagem apagada sumindo no outro lado) não foram registrados em captura.
 
 ## 8. Prompts para erros no teste do aparelho
 
