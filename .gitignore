@@ -1,0 +1,16 @@
+# Dependências e builds
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Segredos locais
+.env
+.env.*
+!.env.example
