@@ -8,7 +8,7 @@ interface RoomRow {
   emoji: string;
   created_by: string;
   created_at: string;
-  room_members: { count: number }[];
+  member_count: number | null;
 }
 
 function toRoom(row: RoomRow): Room {
@@ -19,15 +19,17 @@ function toRoom(row: RoomRow): Room {
     emoji: row.emoji,
     createdBy: row.created_by,
     createdAt: row.created_at,
-    memberCount: row.room_members?.[0]?.count ?? 0,
+    memberCount: row.member_count ?? 0,
   };
 }
 
 // Todas as salas, com a contagem de membros (uma consulta só, sem N+1).
+// CORREÇÃO C29: "room_members(count)" passava pelo RLS e dava 0 para quem
+// não é membro; member_count é uma função do banco (coluna calculada).
 export async function listRooms(): Promise<Room[]> {
   const { data, error } = await supabase
     .from('rooms')
-    .select('*, room_members(count)')
+    .select('*, member_count')
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data as RoomRow[]).map(toRoom);
@@ -49,7 +51,7 @@ export async function listMyRoomIds(userId: string): Promise<Set<string>> {
 export async function getRoom(id: string): Promise<Room> {
   const { data, error } = await supabase
     .from('rooms')
-    .select('*, room_members(count)')
+    .select('*, member_count')
     .eq('id', id)
     .single();
   if (error) throw error;

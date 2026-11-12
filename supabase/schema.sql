@@ -132,6 +132,25 @@ create policy "Membros: sair (apagar a própria linha)"
 revoke all on public.room_members from anon, authenticated; -- CORREÇÃO C13
 grant select, insert, delete on public.room_members to authenticated;
 
+-- CORREÇÃO C29: contagem de participantes visível para quem ainda não
+-- entrou. A política de room_members só mostra linhas a quem já é membro,
+-- então o "room_members(count)" do guia devolvia 0 para quem está fora da
+-- sala (tela "Entrar na sala" e lista de Salas mostravam "0 participantes").
+-- Esta função conta sem expor QUEM participa; o PostgREST a usa como uma
+-- coluna calculada: select('*, member_count').
+create or replace function public.member_count(r public.rooms)
+returns integer
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select count(*)::int from public.room_members where room_id = r.id;
+$$;
+
+revoke all on function public.member_count(public.rooms) from public, anon;
+grant execute on function public.member_count(public.rooms) to authenticated;
+
 -- 4) Mensagens --------------------------------------------------------------
 create table public.messages (
   id uuid primary key default gen_random_uuid(),

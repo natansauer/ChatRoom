@@ -46,7 +46,7 @@ Do outro lado (navegador, conta teste123): mensagem apagada no celular some sozi
 
 ## Relatório de correções
 
-O relatório com todos os problemas encontrados (C01 a C28), os prompts usados, as
+O relatório com todos os problemas encontrados (C01 a C29), os prompts usados, as
 respostas da IA e as soluções está em
 [`docs/RELATORIO-CORRECOES.md`](docs/RELATORIO-CORRECOES.md).
 
@@ -88,7 +88,7 @@ navegador com `npx expo start --web`). Mensagens, contador de online,
 | ------------------ | ------------------------------------------------------------------ |
 | `npm test`         | Tudo: app (Jest) e banco (PGlite)                                  |
 | `npm run test:app` | 31 testes: agrupamento e envio otimista, avatar, digitação, erros  |
-| `npm run test:db`  | 13 testes: RLS, gatilho de perfil, participação e privilégios anon |
+| `npm run test:db`  | 14 testes: RLS, gatilho de perfil, participação e privilégios anon |
 
 O teste do banco usa o PGlite (Postgres real dentro do Node), com o mesmo
 `schema.sql` do Supabase e os privilégios padrão do Supabase reproduzidos —

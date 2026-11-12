@@ -2,7 +2,7 @@
 
 12/11/2026 · Natan Sauer
 
-Foram encontradas e corrigidas 22 falhas ao construir o ChatRoom pelo guia do Prof. Bruno Assunção Dias (IESB); outros 6 problemas apareceram e foram resolvidos na configuração e no teste no celular (C23 a C28). Os 31 testes do app passam, o app rodou no Android pelo Expo Go (SDK 54) e o tempo real funcionou entre dois aparelhos.
+Foram encontradas e corrigidas 22 falhas ao construir o ChatRoom pelo guia do Prof. Bruno Assunção Dias (IESB); outros 7 problemas apareceram e foram resolvidos na configuração e nos testes no celular (C23 a C29). Os 31 testes do app passam, o app rodou no Android pelo Expo Go (SDK 54) e o tempo real funcionou entre dois aparelhos.
 
 > Versão editável deste relatório: https://claude.ai/artifact/5MDSwrBX3QYsc7Cdcgxdrs
 
@@ -10,7 +10,7 @@ Foram encontradas e corrigidas 22 falhas ao construir o ChatRoom pelo guia do Pr
 
 **Disciplina:** Programação para Dispositivos Móveis — IESB. **Professor:** Prof. Me. Bruno Assunção Dias. **Ferramenta de IA:** Claude (Anthropic), modelo Claude Opus 5.5.
 
-O código do guia (Etapas 1 a 15, 50 blocos de código) foi transcrito arquivo por arquivo e revisado com a IA. Cada problema recebeu um código (C01 a C28) e um comentário `// CORREÇÃO:` no próprio código, localizável com `grep -rn "CORREÇÃO" app src supabase`.
+O código do guia (Etapas 1 a 15, 50 blocos de código) foi transcrito arquivo por arquivo e revisado com a IA. Cada problema recebeu um código (C01 a C29) e um comentário `// CORREÇÃO:` no próprio código, localizável com `grep -rn "CORREÇÃO" app src supabase`.
 
 Cada item a seguir traz: **Problema** (erro ou sintoma), **Diagnóstico da IA** (a resposta dada) e **Solução implementada**.
 
@@ -94,7 +94,7 @@ Os 31 testes do app passaram no ambiente da IA, o app rodou no celular e o tempo
 | 31 testes do app (20 do guia + 4 do envio otimista + 7 de erros) | 31/31 passando |
 | Tipagem dos módulos puros (utils, types, testes) | Sem erros |
 | Sintaxe dos arquivos .ts/.tsx e do teste do banco | Sem erros |
-| 13 testes do banco (PGlite: 12 do guia + 1 de privilégios) | Escritos e revisados; rodar `npm run test:db` |
+| 14 testes do banco (PGlite: 12 do guia + 1 de privilégios + 1 da contagem de participantes) | Escritos e revisados; rodar `npm run test:db` |
 | Tempo real com dois aparelhos (cenários 7 a 11) | Passou no celular + navegador (ver abaixo) |
 
 O ambiente da IA não tinha acesso ao registro do npm, então os testes do app rodaram com um executor compatível com Jest sobre os mesmos arquivos. Verificação final no computador: `4-testes.bat` (ou `npm run typecheck`, `npm run test:app`, `npm run test:db`). Depois, seguir os 15 cenários manuais da Etapa 14.3 do guia, com duas contas em dois aparelhos (ou celular + navegador).
@@ -124,8 +124,9 @@ Primeira rodada no Android, pelo Expo Go (SDK 54), depois das correções C23 a 
 | 7 — Mandar de um aparelho e ver no outro (19:35) | Passou: a mensagem "aaa" de teste123 chegou ao celular sem atualizar a tela, à esquerda, com nome, avatar laranja e horário | [tempo-real-mensagem.png](screenshots/tempo-real-mensagem.png) |
 | 10 — Parar de digitar por alguns segundos (navegador, 19:39) | Passou: "Natan Forte Sauer está digitando..." apareceu no navegador e sumiu sozinho depois que o celular parou de digitar | [web-digitando.png](screenshots/web-digitando.png), [web-digitando-sumiu.png](screenshots/web-digitando-sumiu.png) |
 | 11 — Apagar uma mensagem e ver sumir no outro aparelho (19:39) | Passou: "essa mensagem vai ser exclui", mandada pelo celular, apareceu no navegador e sumiu dele quando foi apagada no celular. Confirma a correção C06 (o filtro de DELETE do guia impediria isso) | [web-antes-de-apagar.png](screenshots/web-antes-de-apagar.png), [web-depois-de-apagar.png](screenshots/web-depois-de-apagar.png) |
+| 13 — Sair da sala e tentar reabrir sem entrar de novo (navegador, 19:42) | Passou: voltou a tela de boas-vindas com "Entrar na sala", sem mostrar as mensagens. Mas mostrava "0 participantes" com o celular ainda na sala (ver C29) | [web-reentrar-sala.png](screenshots/web-reentrar-sala.png) |
 
-O tempo real foi confirmado entre dois aparelhos (celular com a conta principal e navegador com a conta teste123): presença, digitando e mensagem nova chegaram sozinhos, sem atualizar a tela. Também passaram, vistos do navegador, o aviso de digitando sumindo sozinho (10) e a mensagem apagada no celular sumindo do outro aparelho (11). Ficaram de fora só os cenários 13 a 15 (sair e reabrir sem entrar, trocar o nome e mandar mensagem, modo avião).
+O tempo real foi confirmado entre dois aparelhos (celular com a conta principal e navegador com a conta teste123): presença, digitando e mensagem nova chegaram sozinhos, sem atualizar a tela. Também passaram, vistos do navegador, o aviso de digitando sumindo sozinho (10) e a mensagem apagada no celular sumindo do outro aparelho (11). O cenário 13 (sair e reabrir sem entrar) também passou e revelou o problema C29. Ficaram de fora só os cenários 14 e 15 (trocar o nome e mandar mensagem, modo avião).
 
 ## 8. Prompts para erros no teste do aparelho
 
@@ -149,3 +150,4 @@ Problemas encontrados durante a configuração e os testes no celular.
 | C26 | Aba Perfil quase vazia: sem nome nem avatar, só o e-mail e "Editar nome" | Mesmo prompt do C25 | Mesma causa do C25. Além disso, a conta foi criada antes do gatilho existir, então o perfil dela nunca seria criado sozinho; e a tela do guia não mostrava erro quando o perfil não carregava | Rodada no SQL Editor a consulta que cria os perfis que faltam (incluída também no fim do `schema.sql`). Perfil redesenhado: cabeçalho na cor do avatar, contador de salas, cartão "Conta" (nome, e-mail, membro desde, salas) e tela de erro com "Tentar novamente" |
 | C27 | Projeto em `Downloads\chatroom\chatroom` (uma pasta dentro da outra), e as correções do C25 e C26 ainda só no zip | "agora que ja tem a pasta C:\Users\natan\Downloads\chatroom\chatroom, voce nao pode mudar direto la? e viu q ela esta chatroom/chatroom, tire uma de dentro da outra ja" | O "Extrair tudo" do Windows cria uma pasta com o nome do zip e coloca a pasta do projeto dentro dela. Com acesso à pasta pelo app do Claude, a IA gravou a versão atualizada direto em `Downloads\chatroom`, mantendo o `package-lock.json` e o `tsconfig.json` já ajustados pelo Expo. Por segurança, a ferramenta não grava `.env` nem apaga pastas | 64 arquivos gravados na pasta de cima; `.env` e `node_modules` movidos à mão (Ctrl+X / Ctrl+V) para não reinstalar nem redigitar a chave |
 | C28 | Ao apagar a pasta de dentro: "Acesso Negado à Pasta — Você precisa de permissão de NS_00\natan" | Print da janela de erro do Windows | O usuário pedido é o próprio dono da pasta, então não é falta de permissão: algum programa ainda estava com arquivos abertos, quase sempre o servidor do Expo (janela do `2-iniciar.bat`) ou o VS Code | Servidor do Expo encerrado (Ctrl+C) e janelas fechadas; a pasta foi apagada e o app iniciado de novo a partir de `Downloads\chatroom` |
+| C29 | Ao sair da sala "ads" pelo navegador e abri-la de novo, a tela de boas-vindas mostrava "0 participantes", mesmo com a conta do celular ainda dentro. Na lista de Salas, quem não participa também via 0 | Print da tela de boas-vindas: "saindo de ads e tentando entrar de novo" | O comportamento do cenário 13 está certo (pede para entrar de novo e esconde as mensagens). O defeito é do guia: a contagem `room_members(count)` passa pelo RLS, e a política de `room_members` só mostra linhas para quem já é membro; para quem está fora, a conta sempre dá 0 | Nova função `member_count(rooms)` com `security definer`, usada como coluna calculada (`select('*, member_count')`): mostra QUANTOS participam sem revelar QUEM. Para aplicar no banco já existente: rodar `supabase/migrations/C29-member-count.sql` no SQL Editor; o `schema.sql` já inclui a função; 1 teste novo no banco (14 no total) |

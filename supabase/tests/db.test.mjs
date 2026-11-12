@@ -201,6 +201,24 @@ describe('salas e participação', () => {
     );
   });
 
+  // CORREÇÃO C29: quem está fora vê QUANTOS participam, mas não QUEM.
+  it('quem ainda não entrou vê a contagem de participantes, mas não a lista', async () => {
+    const roomId = await createRoom(ALICE);
+    await join(BOB, roomId);
+    const count = await as(CARL, () =>
+      one('select public.member_count(r) as n from rooms r where r.id = $1', [roomId]),
+    );
+    assert.equal(count.n, 2);
+    assert.equal(
+      (
+        await as(CARL, () =>
+          rows('select user_id from room_members where room_id = $1', [roomId]),
+        )
+      ).length,
+      0,
+    );
+  });
+
   it('sair da sala apaga a própria participação, e só a própria', async () => {
     const roomId = await createRoom(ALICE);
     await join(BOB, roomId);
